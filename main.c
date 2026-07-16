@@ -11,7 +11,7 @@ struct Contacts {
 
 void PrintMenu();
 void AddContact(int* free, struct Contacts* contacts, int* currentCount);
-void ListContact(int* free, struct Contacts* contacts, int* currentCount);
+void ListContact(struct Contacts* contacts, int* currentCount);
 void DeleteContact();
 int SearchContact();
 
@@ -84,7 +84,24 @@ void AddContact( int* free, struct Contacts* contacts, int* currentCount){
     (*currentCount)++;
 }
 
-void ListContact(int* free, struct Contacts* contacts, int* currentCount)
+void ListContact(struct Contacts* contacts, int* currentCount)
+{
+    int input;
+    while (currentCount <= 0) {
+        printf("\n There is no contact yet!");
+        printf("\n Enter 0 to go back: ");
+        input = GetIntInput();
+        if (input == 0) {
+            return;
+        }
+    }
+    for (int i = 0; i < *currentCount; i++)
+    {
+        printf("%s\n", contacts[i].name);
+        printf("%s\n", contacts[i].phone);
+        printf("%s\n\n", contacts[i].email);
+    }
+}
 
 int GetIntInput()
 {
