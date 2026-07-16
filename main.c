@@ -12,8 +12,8 @@ struct Contacts {
 void PrintMenu();
 void AddContact(struct Contacts* contacts, int* currentCount,int* maxSize);
 void ListContact(struct Contacts* contacts, int* currentCount);
-void DeleteContact();
-int SearchContact();
+void DeleteContact(struct Contacts* contacts, int* currentCount);
+void SearchContact(struct Contacts* contacts, int* currentCount);
 
 int GetIntInput();
 
@@ -43,10 +43,10 @@ int main(void)
                 AddContact(contacts, &currentCount, &maxSize);
                 break;
             case 3:
-                SearchContact();
+                SearchContact(contacts, &currentCount);
                 break;
             case 4:
-                DeleteContact();
+                DeleteContact(contacts, &currentCount);
                 break;
             case 0:
                 printf("Shutting down the program");
@@ -84,12 +84,15 @@ void AddContact(struct Contacts* contacts, int* currentCount, int* maxSize){
 
         printf("Please enter a contact name: ");
         fgets(contacts[*currentCount].name, sizeof(contacts[*currentCount].name), stdin);
+        contacts[*currentCount].name[strcspn(contacts[*currentCount].name, "\n")] = '\0';
 
         printf("Please enter a phone number: ");
         fgets(contacts[*currentCount].phone, sizeof(contacts[*currentCount].phone), stdin);
+        contacts[*currentCount].phone[strcspn(contacts[*currentCount].phone, "\n")] = '\0';
 
         printf("Please enter an email");
         fgets(contacts[*currentCount].email, sizeof(contacts[*currentCount].email), stdin);
+        contacts[*currentCount].email[strcspn(contacts[*currentCount].email, "\n")] = '\0';
     }
 
     printf("Please enter a contact name: ");
@@ -122,6 +125,50 @@ void ListContact(struct Contacts* contacts, int* currentCount)
         printf("%s\n\n", contacts[i].email);
     }
 }
+
+void SearchContact(struct Contacts* contacts, int* currentCount)
+{
+    char searchName[20];
+    printf("\nPlease enter a name for search: ");
+    fgets(searchName, sizeof(searchName), stdin);
+    searchName[strcspn(searchName, "\n")] = '\0';
+
+    for (int i = 0; i < *currentCount; i++)
+    {
+        if (!(strcmp(searchName, contacts[i].name)))
+        {
+
+            printf("Contact found!\n");
+            printf("%s\n", contacts[i].name);
+            printf("%s\n", contacts[i].phone);
+            printf("%s\n\n", contacts[i].email);
+            return;
+        }
+    }
+}
+
+void DeleteContact(struct Contacts* contacts, int* currentCount)
+{
+    char searchName[20];
+    printf("\nPlease enter a name for delete: ");
+    fgets(searchName, sizeof(searchName), stdin);
+    searchName[strcspn(searchName, "\n")] = '\0';
+
+    for (int i = 0; i < *currentCount; i++)
+    {
+        if (!(strcmp(searchName, contacts[i].name)))
+        {
+            for (int j = i; j < *currentCount; j++)
+            {
+                contacts[j] = contacts [j+1];
+                (*currentCount)--;
+                printf("Contact '%s' deleted successfully!\n", searchName);
+            }
+        }
+        printf("Contact not found: %s\n", searchName);
+    }
+}
+
 
 int GetIntInput()
 {
