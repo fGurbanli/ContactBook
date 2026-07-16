@@ -10,7 +10,7 @@ struct Contacts {
 };
 
 void PrintMenu();
-void AddContact(int* free, struct Contacts* contacts, int* currentCount);
+void AddContact(struct Contacts* contacts, int* currentCount,int* maxSize);
 void ListContact(struct Contacts* contacts, int* currentCount);
 void DeleteContact();
 int SearchContact();
@@ -21,8 +21,13 @@ int main(void)
 {
     int maxSize = 5;
     int currentCount = 0;
-    int freeSpace = 5;
-    struct Contacts contacts[maxSize];
+
+    struct Contacts* contacts = calloc(maxSize, sizeof(struct Contacts));
+    if (contacts == NULL) {
+        printf("\nMemory allocation failed!");
+        free(contacts);
+        return 1;
+    }
 
     while (1)
     {
@@ -32,10 +37,10 @@ int main(void)
         switch (option) {
             case 1:
                 printf("Openning contact list...\n");
-                ListContact();
+                ListContact(contacts, &currentCount);
                 break;
             case 2:
-                AddContact(&freeSpace, contacts, &currentCount);
+                AddContact(contacts, &currentCount, &maxSize);
                 break;
             case 3:
                 SearchContact();
@@ -45,12 +50,13 @@ int main(void)
                 break;
             case 0:
                 printf("Shutting down the program");
+                free(contacts);
                 exit(0);
             default:
                 printf("Invalid option!");
         }
     }
-
+    free(contacts);
     return 0;
 }
 
@@ -64,11 +70,26 @@ void PrintMenu()
     printf("\n0-Exit\n");
 }
 
-void AddContact( int* free, struct Contacts* contacts, int* currentCount){
-    if (*free <= 0)
+void AddContact(struct Contacts* contacts, int* currentCount, int* maxSize){
+    if (*currentCount == *maxSize)
     {
-        printf("\nNo free space left!");
-        return;
+        *maxSize *= 2;
+        struct Contacts* temp = realloc(contacts, (*maxSize) * sizeof(struct Contacts));
+        if (temp == NULL) {
+            printf("\nMemory allocation failed!");
+            free(contacts);
+            return;
+        }
+        contacts = temp;
+
+        printf("Please enter a contact name: ");
+        fgets(contacts[*currentCount].name, sizeof(contacts[*currentCount].name), stdin);
+
+        printf("Please enter a phone number: ");
+        fgets(contacts[*currentCount].phone, sizeof(contacts[*currentCount].phone), stdin);
+
+        printf("Please enter an email");
+        fgets(contacts[*currentCount].email, sizeof(contacts[*currentCount].email), stdin);
     }
 
     printf("Please enter a contact name: ");
@@ -80,7 +101,6 @@ void AddContact( int* free, struct Contacts* contacts, int* currentCount){
     printf("Please enter an email");
     fgets(contacts[*currentCount].email, sizeof(contacts[*currentCount].email), stdin);
 
-    (*free)--;
     (*currentCount)++;
 }
 
