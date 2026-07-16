@@ -4,14 +4,14 @@
 
 struct Contacts {
     char name[20];
-    int phone;
+    char phone[20];
     char email[20];
 
 };
 
 void PrintMenu();
-void AddContact();
-void ListContact();
+void AddContact(int* free, struct Contacts* contacts, int* currentCount);
+void ListContact(int* free, struct Contacts* contacts, int* currentCount);
 void DeleteContact();
 int SearchContact();
 
@@ -19,28 +19,38 @@ int GetIntInput();
 
 int main(void)
 {
-    int count = 5;
-    int* contSize = malloc(count * sizeof(int));
+    int maxSize = 5;
+    int currentCount = 0;
+    int freeSpace = 5;
+    struct Contacts contacts[maxSize];
 
-    PrintMenu();
+    while (1)
+    {
+        PrintMenu();
 
-    int option = GetIntInput();
-    switch (option) {
-        case 1:
-            printf("Openning contact list...\n");
-            ListContact();
-        case 2:
-            AddContact();
-        case 3:
-            SearchContact();
-        case 4:
-            DeleteContact();
-        case 0:
-            printf("Shutting down the program");
-            exit(0);
+        int option = GetIntInput();
+        switch (option) {
+            case 1:
+                printf("Openning contact list...\n");
+                ListContact();
+                break;
+            case 2:
+                AddContact(&freeSpace, contacts, &currentCount);
+                break;
+            case 3:
+                SearchContact();
+                break;
+            case 4:
+                DeleteContact();
+                break;
+            case 0:
+                printf("Shutting down the program");
+                exit(0);
+            default:
+                printf("Invalid option!");
+        }
     }
 
-    free(contSize);
     return 0;
 }
 
@@ -54,6 +64,27 @@ void PrintMenu()
     printf("\n0-Exit\n");
 }
 
+void AddContact( int* free, struct Contacts* contacts, int* currentCount){
+    if (*free <= 0)
+    {
+        printf("\nNo free space left!");
+        return;
+    }
+
+    printf("Please enter a contact name: ");
+    fgets(contacts[*currentCount].name, sizeof(contacts[*currentCount].name), stdin);
+
+    printf("Please enter a phone number: ");
+    fgets(contacts[*currentCount].phone, sizeof(contacts[*currentCount].phone), stdin);
+
+    printf("Please enter an email");
+    fgets(contacts[*currentCount].email, sizeof(contacts[*currentCount].email), stdin);
+
+    (*free)--;
+    (*currentCount)++;
+}
+
+void ListContact(int* free, struct Contacts* contacts, int* currentCount)
 
 int GetIntInput()
 {
