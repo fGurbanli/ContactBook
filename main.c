@@ -10,7 +10,7 @@ struct Contacts {
 };
 
 void PrintMenu();
-void AddContact(struct Contacts* contacts, int* currentCount,int* maxSize);
+void AddContact(struct Contacts** contacts, int* currentCount,int* maxSize);
 void ListContact(struct Contacts* contacts, int* currentCount);
 void DeleteContact(struct Contacts* contacts, int* currentCount);
 void SearchContact(struct Contacts* contacts, int* currentCount);
@@ -40,7 +40,7 @@ int main(void)
                 ListContact(contacts, &currentCount);
                 break;
             case 2:
-                AddContact(contacts, &currentCount, &maxSize);
+                AddContact(&contacts, &currentCount, &maxSize);
                 break;
             case 3:
                 SearchContact(contacts, &currentCount);
@@ -69,47 +69,47 @@ void PrintMenu()
     printf("\n0-Exit\n");
 }
 
-void AddContact(struct Contacts* contacts, int* currentCount, int* maxSize){
+void AddContact(struct Contacts** contacts, int* currentCount, int* maxSize){
     while (getchar()!= '\n');
     if (*currentCount == *maxSize)
     {
         *maxSize *= 2;
-        struct Contacts* temp = realloc(contacts, (*maxSize) * sizeof(struct Contacts));
+        struct Contacts* temp = realloc(*contacts, (*maxSize) * sizeof(struct Contacts));
         if (temp == NULL) {
             printf("\nMemory allocation failed!");
-            free(contacts);
             return;
         }
-        contacts = temp;
+        *contacts = temp;
 
         printf("\nPlease enter a contact name: ");
-        fgets(contacts[*currentCount].name, sizeof(contacts[*currentCount].name), stdin);
-        contacts[*currentCount].name[strcspn(contacts[*currentCount].name, "\n")] = '\0';
+        fgets((*contacts)[*currentCount].name, sizeof(contacts[*currentCount].name), stdin);
+        (*contacts)[*currentCount].name[strcspn(contacts[*currentCount].name, "\n")] = '\0';
 
 
         printf("Please enter a phone number: ");
-        fgets(contacts[*currentCount].phone, sizeof(contacts[*currentCount].phone), stdin);
-        contacts[*currentCount].phone[strcspn(contacts[*currentCount].phone, "\n")] = '\0';
+        fgets((*contacts)[*currentCount].phone, sizeof(contacts[*currentCount].phone), stdin);
+        (*contacts)[*currentCount].phone[strcspn(contacts[*currentCount].phone, "\n")] = '\0';
 
 
         printf("Please enter an email: ");
-        fgets(contacts[*currentCount].email, sizeof(contacts[*currentCount].email), stdin);
-        contacts[*currentCount].email[strcspn(contacts[*currentCount].email, "\n")] = '\0';
-
+        fgets((*contacts)[*currentCount].email, sizeof(contacts[*currentCount].email), stdin);
+        (*contacts)[*currentCount].email[strcspn(contacts[*currentCount].email, "\n")] = '\0';
+        (*currentCount)++;
+        return;
     }
     printf("\nPlease enter a contact name: ");
-    fgets(contacts[*currentCount].name, sizeof(contacts[*currentCount].name), stdin);
-    contacts[*currentCount].name[strcspn(contacts[*currentCount].name, "\n")] = '\0';
+    fgets((*contacts)[*currentCount].name, sizeof(contacts[*currentCount].name), stdin);
+    (*contacts)[*currentCount].name[strcspn(contacts[*currentCount].name, "\n")] = '\0';
 
 
     printf("Please enter a phone number: ");
-    fgets(contacts[*currentCount].phone, sizeof(contacts[*currentCount].phone), stdin);
-    contacts[*currentCount].phone[strcspn(contacts[*currentCount].phone, "\n")] = '\0';
+    fgets((*contacts)[*currentCount].phone, sizeof(contacts[*currentCount].phone), stdin);
+    (*contacts)[*currentCount].phone[strcspn(contacts[*currentCount].phone, "\n")] = '\0';
 
 
     printf("Please enter an email: ");
-    fgets(contacts[*currentCount].email, sizeof(contacts[*currentCount].email), stdin);
-    contacts[*currentCount].email[strcspn(contacts[*currentCount].email, "\n")] = '\0';
+    fgets((*contacts)[*currentCount].email, sizeof(contacts[*currentCount].email), stdin);
+    (*contacts)[*currentCount].email[strcspn(contacts[*currentCount].email, "\n")] = '\0';
 
     (*currentCount)++;
 }
@@ -165,7 +165,7 @@ void DeleteContact(struct Contacts* contacts, int* currentCount)
     printf("\nPlease enter an index of contact: ");
     int index = GetIntInput() - 1;
 
-    if (index - 1 > *currentCount) {
+    if (index - 1 >= *currentCount) {
         printf("\nEnter a valid index!");
         return;
     }
