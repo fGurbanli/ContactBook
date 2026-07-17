@@ -56,8 +56,6 @@ int main(void)
                 printf("Invalid option!");
         }
     }
-    free(contacts);
-    return 0;
 }
 
 void PrintMenu()
@@ -71,6 +69,7 @@ void PrintMenu()
 }
 
 void AddContact(struct Contacts* contacts, int* currentCount, int* maxSize){
+    while (getchar()!= '\n');
     if (*currentCount == *maxSize)
     {
         *maxSize *= 2;
@@ -86,31 +85,39 @@ void AddContact(struct Contacts* contacts, int* currentCount, int* maxSize){
         fgets(contacts[*currentCount].name, sizeof(contacts[*currentCount].name), stdin);
         contacts[*currentCount].name[strcspn(contacts[*currentCount].name, "\n")] = '\0';
 
+
         printf("Please enter a phone number: ");
         fgets(contacts[*currentCount].phone, sizeof(contacts[*currentCount].phone), stdin);
         contacts[*currentCount].phone[strcspn(contacts[*currentCount].phone, "\n")] = '\0';
 
-        printf("Please enter an email");
+
+        printf("Please enter an email: ");
         fgets(contacts[*currentCount].email, sizeof(contacts[*currentCount].email), stdin);
         contacts[*currentCount].email[strcspn(contacts[*currentCount].email, "\n")] = '\0';
-    }
 
+    }
     printf("Please enter a contact name: ");
     fgets(contacts[*currentCount].name, sizeof(contacts[*currentCount].name), stdin);
+    contacts[*currentCount].name[strcspn(contacts[*currentCount].name, "\n")] = '\0';
+
 
     printf("Please enter a phone number: ");
     fgets(contacts[*currentCount].phone, sizeof(contacts[*currentCount].phone), stdin);
+    contacts[*currentCount].phone[strcspn(contacts[*currentCount].phone, "\n")] = '\0';
 
-    printf("Please enter an email");
+
+    printf("Please enter an email: ");
     fgets(contacts[*currentCount].email, sizeof(contacts[*currentCount].email), stdin);
+    contacts[*currentCount].email[strcspn(contacts[*currentCount].email, "\n")] = '\0';
 
     (*currentCount)++;
 }
 
 void ListContact(struct Contacts* contacts, int* currentCount)
 {
+
     int input;
-    while (currentCount <= 0) {
+    while (*currentCount <= 0) {
         printf("\n There is no contact yet!");
         printf("\n Enter 0 to go back: ");
         input = GetIntInput();
@@ -128,6 +135,7 @@ void ListContact(struct Contacts* contacts, int* currentCount)
 
 void SearchContact(struct Contacts* contacts, int* currentCount)
 {
+    while (getchar()!= '\n');
     char searchName[20];
     printf("\nPlease enter a name for search: ");
     fgets(searchName, sizeof(searchName), stdin);
@@ -149,6 +157,7 @@ void SearchContact(struct Contacts* contacts, int* currentCount)
 
 void DeleteContact(struct Contacts* contacts, int* currentCount)
 {
+    while (getchar()!= '\n');
     char searchName[20];
     printf("\nPlease enter a name for delete: ");
     fgets(searchName, sizeof(searchName), stdin);
