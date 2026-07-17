@@ -172,8 +172,8 @@ void DeleteContact(struct Contacts* contacts, int* currentCount)
     for (int i = index; i <= *currentCount; i++) {
 
         contacts[i] = contacts[i + 1];
-        (*currentCount)--;
     }
+    (*currentCount)--;
 }
 
 
