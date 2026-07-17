@@ -161,24 +161,16 @@ void SearchContact(struct Contacts* contacts, int* currentCount)
 void DeleteContact(struct Contacts* contacts, int* currentCount)
 {
     while (getchar()!= '\n');
-    char searchName[20];
-    printf("\nPlease enter a name for delete: ");
-    fgets(searchName, sizeof(searchName), stdin);
-    searchName[strcspn(searchName, "\n")] = '\0';
+    ListContact(contacts, currentCount);
+    printf("\nPlease enter an index of contact: ");
+    int index = GetIntInput() - 1;
 
-    for (int i = 0; i < *currentCount; i++)
-    {
-        if (!(strcmp(searchName, contacts[i].name)))
-        {
-            for (int j = i; j < *currentCount; j++)
-            {
-                contacts[j] = contacts [j+1];
-                (*currentCount)--;
-                printf("\nContact '%s' deleted successfully!\n", searchName);
-            }
-        }
+    if (index - 1 > *currentCount) {
+        printf("\nEnter a valid index!");
+        return;
     }
-    printf("\nContact not found: %s\n", searchName);
+    contacts[index] = contacts[index + 1];
+    (*currentCount)--;
 }
 
 
