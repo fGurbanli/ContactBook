@@ -122,6 +122,7 @@ void ListContact(struct Contacts* contacts, int* currentCount)
         printf("\n Enter 0 to go back: ");
         input = GetIntInput();
         if (input == 0) {
+            printf("\n\n");
             return;
         }
     }
@@ -174,8 +175,8 @@ void DeleteContact(struct Contacts* contacts, int* currentCount)
                 printf("Contact '%s' deleted successfully!\n", searchName);
             }
         }
-        printf("Contact not found: %s\n", searchName);
     }
+    printf("Contact not found: %s\n", searchName);
 }
 
 
