@@ -60,6 +60,7 @@ int main(void)
 
 void PrintMenu()
 {
+    printf("\n");
     printf("====Main Menu====\n");
     printf("1-Contact list\n");
     printf("2-Add a new contact\n");
@@ -81,7 +82,7 @@ void AddContact(struct Contacts* contacts, int* currentCount, int* maxSize){
         }
         contacts = temp;
 
-        printf("Please enter a contact name: ");
+        printf("\nPlease enter a contact name: ");
         fgets(contacts[*currentCount].name, sizeof(contacts[*currentCount].name), stdin);
         contacts[*currentCount].name[strcspn(contacts[*currentCount].name, "\n")] = '\0';
 
@@ -96,7 +97,7 @@ void AddContact(struct Contacts* contacts, int* currentCount, int* maxSize){
         contacts[*currentCount].email[strcspn(contacts[*currentCount].email, "\n")] = '\0';
 
     }
-    printf("Please enter a contact name: ");
+    printf("\nPlease enter a contact name: ");
     fgets(contacts[*currentCount].name, sizeof(contacts[*currentCount].name), stdin);
     contacts[*currentCount].name[strcspn(contacts[*currentCount].name, "\n")] = '\0';
 
@@ -115,11 +116,11 @@ void AddContact(struct Contacts* contacts, int* currentCount, int* maxSize){
 
 void ListContact(struct Contacts* contacts, int* currentCount)
 {
-
+    printf("\n");
     int input;
     while (*currentCount <= 0) {
-        printf("\n There is no contact yet!");
-        printf("\n Enter 0 to go back: ");
+        printf("\nThere is no contact yet!");
+        printf("\nEnter 0 to go back: ");
         input = GetIntInput();
         if (input == 0) {
             printf("\n\n");
@@ -128,6 +129,7 @@ void ListContact(struct Contacts* contacts, int* currentCount)
     }
     for (int i = 0; i < *currentCount; i++)
     {
+        printf("--Contact %d--\n", i+1);
         printf("%s\n", contacts[i].name);
         printf("%s\n", contacts[i].phone);
         printf("%s\n\n", contacts[i].email);
@@ -172,11 +174,11 @@ void DeleteContact(struct Contacts* contacts, int* currentCount)
             {
                 contacts[j] = contacts [j+1];
                 (*currentCount)--;
-                printf("Contact '%s' deleted successfully!\n", searchName);
+                printf("\nContact '%s' deleted successfully!\n", searchName);
             }
         }
     }
-    printf("Contact not found: %s\n", searchName);
+    printf("\nContact not found: %s\n", searchName);
 }
 
 
