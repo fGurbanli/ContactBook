@@ -25,7 +25,6 @@ int main(void)
     struct Contacts* contacts = calloc(maxSize, sizeof(struct Contacts));
     if (contacts == NULL) {
         printf("\nMemory allocation failed!");
-        free(contacts);
         return 1;
     }
 
@@ -155,7 +154,7 @@ void DeleteContact(struct Contacts* contacts, int* currentCount)
         printf("\nEnter a valid index!");
         return;
     }
-    for (int i = index; i <= *currentCount; i++) {
+    for (int i = index; i < *currentCount - 1; i++) {
 
         contacts[i] = contacts[i + 1];
     }
