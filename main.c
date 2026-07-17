@@ -82,34 +82,34 @@ void AddContact(struct Contacts** contacts, int* currentCount, int* maxSize){
         *contacts = temp;
 
         printf("\nPlease enter a contact name: ");
-        fgets((*contacts)[*currentCount].name, sizeof(contacts[*currentCount].name), stdin);
-        (*contacts)[*currentCount].name[strcspn(contacts[*currentCount].name, "\n")] = '\0';
+        fgets((*contacts)[*currentCount].name, sizeof((*contacts)[*currentCount].name), stdin);
+        (*contacts)[*currentCount].name[strcspn((*contacts)[*currentCount].name, "\n")] = '\0';
 
 
         printf("Please enter a phone number: ");
-        fgets((*contacts)[*currentCount].phone, sizeof(contacts[*currentCount].phone), stdin);
-        (*contacts)[*currentCount].phone[strcspn(contacts[*currentCount].phone, "\n")] = '\0';
+        fgets((*contacts)[*currentCount].phone, sizeof((*contacts)[*currentCount].phone), stdin);
+        (*contacts)[*currentCount].phone[strcspn((*contacts)[*currentCount].phone, "\n")] = '\0';
 
 
         printf("Please enter an email: ");
-        fgets((*contacts)[*currentCount].email, sizeof(contacts[*currentCount].email), stdin);
-        (*contacts)[*currentCount].email[strcspn(contacts[*currentCount].email, "\n")] = '\0';
+        fgets((*contacts)[*currentCount].email, sizeof((*contacts)[*currentCount].email), stdin);
+        (*contacts)[*currentCount].email[strcspn((*contacts)[*currentCount].email, "\n")] = '\0';
         (*currentCount)++;
         return;
     }
     printf("\nPlease enter a contact name: ");
-    fgets((*contacts)[*currentCount].name, sizeof(contacts[*currentCount].name), stdin);
-    (*contacts)[*currentCount].name[strcspn(contacts[*currentCount].name, "\n")] = '\0';
+    fgets((*contacts)[*currentCount].name, sizeof((*contacts)[*currentCount].name), stdin);
+    (*contacts)[*currentCount].name[strcspn((*contacts)[*currentCount].name, "\n")] = '\0';
 
 
     printf("Please enter a phone number: ");
-    fgets((*contacts)[*currentCount].phone, sizeof(contacts[*currentCount].phone), stdin);
-    (*contacts)[*currentCount].phone[strcspn(contacts[*currentCount].phone, "\n")] = '\0';
+    fgets((*contacts)[*currentCount].phone, sizeof((*contacts)[*currentCount].phone), stdin);
+    (*contacts)[*currentCount].phone[strcspn((*contacts)[*currentCount].phone, "\n")] = '\0';
 
 
     printf("Please enter an email: ");
-    fgets((*contacts)[*currentCount].email, sizeof(contacts[*currentCount].email), stdin);
-    (*contacts)[*currentCount].email[strcspn(contacts[*currentCount].email, "\n")] = '\0';
+    fgets((*contacts)[*currentCount].email, sizeof((*contacts)[*currentCount].email), stdin);
+    (*contacts)[*currentCount].email[strcspn((*contacts)[*currentCount].email, "\n")] = '\0';
 
     (*currentCount)++;
 }
@@ -169,8 +169,11 @@ void DeleteContact(struct Contacts* contacts, int* currentCount)
         printf("\nEnter a valid index!");
         return;
     }
-    contacts[index] = contacts[index + 1];
-    (*currentCount)--;
+    for (int i = index; i <= *currentCount; i++) {
+
+        contacts[i] = contacts[i + 1];
+        (*currentCount)--;
+    }
 }
 
 
