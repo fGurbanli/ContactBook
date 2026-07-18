@@ -18,13 +18,6 @@ int GetIntInput();
 
 int main(void)
 {
-    FILE* contactFile = fopen("contacts.txt", "w");
-
-    if (contactFile == NULL)
-    {
-        printf("File could not be opened!\n");
-        return 1;
-    }
 
 
     int maxSize = 5;
@@ -103,11 +96,17 @@ void AddContact(struct Contacts** contacts, int* currentCount, int* maxSize) {
     }
     char temp[100];
 
+    FILE* contactFile = fopen("contacts.txt", "a");
+    if (contactFile == NULL)
+    {
+        printf("File could not be opened!\n");
+        return ;
+    }
+
     printf("\nPlease enter a contact name: ");
     fgets(temp, sizeof(temp), stdin);
     temp[strcspn(temp, "\n")] = '\0';
     (*contacts)[*currentCount].name = malloc(strlen(temp) + 1);
-
     if ((*contacts)[*currentCount].name == NULL) {
         printf("\nMemory allocation failed!");
         return;
@@ -137,7 +136,13 @@ void AddContact(struct Contacts** contacts, int* currentCount, int* maxSize) {
     }
     strcpy((*contacts)[*currentCount].email, temp);
 
+    fprintf(contactFile, "%s,%s,%s\n",
+        (*contacts)[*currentCount].name,
+        (*contacts)[*currentCount].phone,
+        (*contacts)[*currentCount].email);
+
     (*currentCount)++;
+    fclose(contactFile);
 }
 
 void ListContact(struct Contacts* contacts, int* currentCount)
@@ -205,7 +210,6 @@ void DeleteContact(struct Contacts* contacts, int* currentCount)
         contacts[i] = contacts[i + 1];
     }
 }
-
 
 int GetIntInput()
 {
