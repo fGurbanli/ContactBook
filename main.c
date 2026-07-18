@@ -6,7 +6,6 @@ struct Contacts {
     char* name;
     char* phone;
     char* email;
-
 };
 
 void PrintMenu();
@@ -19,6 +18,13 @@ int GetIntInput();
 
 int main(void)
 {
+    FILE* contactFile = fopen("contacts.txt", "w");
+
+    if (contactFile == NULL)
+    {
+        printf("File could not be opened!\n");
+        return 1;
+    }
 
 
     int maxSize = 5;
@@ -56,6 +62,7 @@ int main(void)
                     free(contacts[i].name);
                     free(contacts[i].phone);
                     free(contacts[i].email);
+
                 }
                 free(contacts);
                 exit(0);
