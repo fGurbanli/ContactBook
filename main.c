@@ -86,6 +86,12 @@ void AddContact(struct Contacts** contacts, int* currentCount, int* maxSize) {
             printf("\nMemory allocation failed!");
             return;
         }
+        for (int i = *currentCount; i < *maxSize; i++)
+        {
+            (*contacts)[i].name = NULL;
+            (*contacts)[i].phone = NULL;
+            (*contacts)[i].email = NULL;
+        }
         *contacts = temp;
     }
     char temp[100];
