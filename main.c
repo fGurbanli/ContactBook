@@ -3,9 +3,9 @@
 #include <string.h>
 
 struct Contacts {
-    char name[20];
-    char phone[20];
-    char email[20];
+    char* name;
+    char* phone;
+    char* email;
 
 };
 
@@ -19,6 +19,8 @@ int GetIntInput();
 
 int main(void)
 {
+
+
     int maxSize = 5;
     int currentCount = 0;
 
@@ -49,6 +51,12 @@ int main(void)
                 break;
             case 0:
                 printf("Shutting down the program");
+                for (int i = 0; i < currentCount; i++)
+                {
+                    free(contacts[i].name);
+                    free(contacts[i].phone);
+                    free(contacts[i].email);
+                }
                 free(contacts);
                 exit(0);
             default:
@@ -68,7 +76,7 @@ void PrintMenu()
     printf("\n0-Exit\n");
 }
 
-void AddContact(struct Contacts** contacts, int* currentCount, int* maxSize){
+void AddContact(struct Contacts** contacts, int* currentCount, int* maxSize) {
     while (getchar()!= '\n');
     if (*currentCount == *maxSize)
     {
@@ -79,21 +87,42 @@ void AddContact(struct Contacts** contacts, int* currentCount, int* maxSize){
             return;
         }
         *contacts = temp;
-
     }
-    printf("\nPlease enter a contact name: ");
-    fgets((*contacts)[*currentCount].name, sizeof((*contacts)[*currentCount].name), stdin);
-    (*contacts)[*currentCount].name[strcspn((*contacts)[*currentCount].name, "\n")] = '\0';
+    char temp[100];
 
+    printf("\nPlease enter a contact name: ");
+    fgets(temp, sizeof(temp), stdin);
+    temp[strcspn(temp, "\n")] = '\0';
+    (*contacts)[*currentCount].name = malloc(strlen(temp) + 1);
+
+    if ((*contacts)[*currentCount].name == NULL) {
+        printf("\nMemory allocation failed!");
+        return;
+    }
+    strcpy((*contacts)[*currentCount].name, temp);
 
     printf("Please enter a phone number: ");
-    fgets((*contacts)[*currentCount].phone, sizeof((*contacts)[*currentCount].phone), stdin);
-    (*contacts)[*currentCount].phone[strcspn((*contacts)[*currentCount].phone, "\n")] = '\0';
+    fgets(temp, sizeof(temp), stdin);
+    temp[strcspn(temp, "\n")] = '\0';
+    (*contacts)[*currentCount].phone = malloc(strlen(temp) + 1);
+
+    if ((*contacts)[*currentCount].phone == NULL) {
+        printf("\nMemory allocation failed!");
+        return;
+    }
+    strcpy((*contacts)[*currentCount].phone, temp);
 
 
     printf("Please enter an email: ");
-    fgets((*contacts)[*currentCount].email, sizeof((*contacts)[*currentCount].email), stdin);
-    (*contacts)[*currentCount].email[strcspn((*contacts)[*currentCount].email, "\n")] = '\0';
+    fgets(temp, sizeof(temp), stdin);
+    temp[strcspn(temp, "\n")] = '\0';
+    (*contacts)[*currentCount].email = malloc(strlen(temp) + 1);
+
+    if ((*contacts)[*currentCount].email == NULL) {
+        printf("\nMemory allocation failed!");
+        return;
+    }
+    strcpy((*contacts)[*currentCount].email, temp);
 
     (*currentCount)++;
 }
@@ -154,11 +183,14 @@ void DeleteContact(struct Contacts* contacts, int* currentCount)
         printf("\nEnter a valid index!");
         return;
     }
+    free(contacts[index].name);
+    free(contacts[index].phone);
+    free(contacts[index].email);
+    (*currentCount)--;
     for (int i = index; i < *currentCount - 1; i++) {
 
         contacts[i] = contacts[i + 1];
     }
-    (*currentCount)--;
 }
 
 
