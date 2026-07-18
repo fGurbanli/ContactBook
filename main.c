@@ -19,7 +19,6 @@ int GetIntInput();
 int main(void)
 {
 
-
     int maxSize = 5;
     int currentCount = 0;
 
@@ -136,7 +135,7 @@ void AddContact(struct Contacts** contacts, int* currentCount, int* maxSize) {
     }
     strcpy((*contacts)[*currentCount].email, temp);
 
-    fprintf(contactFile, "%s,%s,%s\n",
+    fprintf(contactFile, "%s\n%s\n%s\n\n",
         (*contacts)[*currentCount].name,
         (*contacts)[*currentCount].phone,
         (*contacts)[*currentCount].email);
@@ -147,6 +146,7 @@ void AddContact(struct Contacts** contacts, int* currentCount, int* maxSize) {
 
 void ListContact(struct Contacts* contacts, int* currentCount)
 {
+
     printf("\n");
     int input;
     while (*currentCount <= 0) {
@@ -158,6 +158,7 @@ void ListContact(struct Contacts* contacts, int* currentCount)
             return;
         }
     }
+
     for (int i = 0; i < *currentCount; i++)
     {
         printf("--Contact %d--\n", i+1);
@@ -165,6 +166,7 @@ void ListContact(struct Contacts* contacts, int* currentCount)
         printf("%s\n", contacts[i].phone);
         printf("%s\n\n", contacts[i].email);
     }
+
 }
 
 void SearchContact(struct Contacts* contacts, int* currentCount)
@@ -209,6 +211,7 @@ void DeleteContact(struct Contacts* contacts, int* currentCount)
 
         contacts[i] = contacts[i + 1];
     }
+
 }
 
 int GetIntInput()
