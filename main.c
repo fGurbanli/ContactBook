@@ -6,6 +6,7 @@ struct Contacts {
     char* name;
     char* phone;
     char* email;
+
 };
 
 void PrintMenu();
@@ -18,6 +19,7 @@ int GetIntInput();
 
 int main(void)
 {
+
 
     int maxSize = 5;
     int currentCount = 0;
@@ -54,7 +56,6 @@ int main(void)
                     free(contacts[i].name);
                     free(contacts[i].phone);
                     free(contacts[i].email);
-
                 }
                 free(contacts);
                 exit(0);
@@ -95,17 +96,11 @@ void AddContact(struct Contacts** contacts, int* currentCount, int* maxSize) {
     }
     char temp[100];
 
-    FILE* contactFile = fopen("contacts.txt", "a");
-    if (contactFile == NULL)
-    {
-        printf("File could not be opened!\n");
-        return ;
-    }
-
     printf("\nPlease enter a contact name: ");
     fgets(temp, sizeof(temp), stdin);
     temp[strcspn(temp, "\n")] = '\0';
     (*contacts)[*currentCount].name = malloc(strlen(temp) + 1);
+
     if ((*contacts)[*currentCount].name == NULL) {
         printf("\nMemory allocation failed!");
         return;
@@ -135,18 +130,11 @@ void AddContact(struct Contacts** contacts, int* currentCount, int* maxSize) {
     }
     strcpy((*contacts)[*currentCount].email, temp);
 
-    fprintf(contactFile, "%s\n%s\n%s\n\n",
-        (*contacts)[*currentCount].name,
-        (*contacts)[*currentCount].phone,
-        (*contacts)[*currentCount].email);
-
     (*currentCount)++;
-    fclose(contactFile);
 }
 
 void ListContact(struct Contacts* contacts, int* currentCount)
 {
-
     printf("\n");
     int input;
     while (*currentCount <= 0) {
@@ -158,7 +146,6 @@ void ListContact(struct Contacts* contacts, int* currentCount)
             return;
         }
     }
-
     for (int i = 0; i < *currentCount; i++)
     {
         printf("--Contact %d--\n", i+1);
@@ -166,7 +153,6 @@ void ListContact(struct Contacts* contacts, int* currentCount)
         printf("%s\n", contacts[i].phone);
         printf("%s\n\n", contacts[i].email);
     }
-
 }
 
 void SearchContact(struct Contacts* contacts, int* currentCount)
@@ -211,8 +197,8 @@ void DeleteContact(struct Contacts* contacts, int* currentCount)
 
         contacts[i] = contacts[i + 1];
     }
-
 }
+
 
 int GetIntInput()
 {
